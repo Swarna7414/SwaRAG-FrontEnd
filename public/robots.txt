@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://debeshjha.github.io/MyWebPortfolio/sitemap.xml
