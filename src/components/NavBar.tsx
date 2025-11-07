@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import 'boxicons/css/boxicons.min.css';
 import NavBarLogo from '../assets/Navbarlogo.png'
 
 const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMobilePeopleOpen, setIsMobilePeopleOpen] = useState<boolean>(false);
-  const location = useLocation();
+
 
   const toggleMenu = (): void => {
     setIsOpen((prev) => !prev);
@@ -16,10 +16,6 @@ const NavBar: React.FC = () => {
     setIsMobilePeopleOpen((prev) => !prev);
   };
 
-  const isPeopleActive = location.pathname === '/people' || 
-                        location.pathname === '/faculty' || 
-                        location.pathname === '/staff' || 
-                        location.pathname === '/students';
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md border-b border-gray-200/50 h-20 flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-50">
@@ -44,109 +40,6 @@ const NavBar: React.FC = () => {
           )}
         </button>
       </div>
-
-      <ul className="hidden md:flex flex-row justify-between items-center gap-8 transition duration-300 ease-in-out text-lg">
-        <Link to="/">
-          <li className={`font-medium transition-colors duration-200 relative group ${
-            location.pathname === '/' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            Home
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-              location.pathname === '/' ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}></span>
-          </li>
-        </Link>
-        <Link to="/about">
-          <li className={`font-medium transition-colors duration-200 relative group ${
-            location.pathname === '/about' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            About
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-              location.pathname === '/about' ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}></span>
-          </li>
-        </Link>
-        <li className="relative group">
-          <div className={`font-medium transition-colors duration-200 ${
-            isPeopleActive ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            People
-          </div>
-          <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-            isPeopleActive ? 'w-full' : 'w-0 group-hover:w-full'
-          }`}></span>
-          
-          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-            <Link
-              to="/faculty"
-              className="flex items-center justify-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-red-600 transition-colors duration-200"
-            >
-              Faculty
-              <svg className="ml-2 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <Link
-              to="/staff"
-              className="flex items-center justify-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-red-600 transition-colors duration-200"
-            >
-              Staff
-              <svg className="ml-2 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <Link
-              to="/students"
-              className="flex items-center justify-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-red-600 transition-colors duration-200"
-            >
-              Students
-              <svg className="ml-2 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-        </li>
-        <Link to="/resources">
-          <li className={`font-medium transition-colors duration-200 relative group ${
-            location.pathname === '/resources' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            Resources
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-              location.pathname === '/resources' ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}></span>
-          </li>
-        </Link>
-        <Link to="/initiatives">
-          <li className={`font-medium transition-colors duration-200 relative group ${
-            location.pathname === '/initiatives' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            Initiatives
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-              location.pathname === '/initiatives' ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}></span>
-          </li>
-        </Link>
-        <Link to="/affiliates">
-          <li className={`font-medium transition-colors duration-200 relative group ${
-            location.pathname === '/affiliates' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            Affiliates
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-              location.pathname === '/affiliates' ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}></span>
-          </li>
-        </Link>
-        <Link to="/contact">
-          <li className={`font-medium transition-colors duration-200 relative group ${
-            location.pathname === '/contact' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'
-          }`}>
-            Contact
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
-              location.pathname === '/contact' ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}></span>
-          </li>
-        </Link>
-      </ul>
 
       <div className={`fixed top-20 right-0 w-64 min-h-screen bg-white/90 backdrop-blur-2xl flex flex-col items-start justify-start gap-6 pt-8 px-6 pb-8 md:hidden transition-all duration-500 ease-in-out shadow-2xl overflow-y-auto z-40 ${
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
