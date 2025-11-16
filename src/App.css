@@ -9,6 +9,16 @@ html, body {
   background: white;
   background-size: 400% 400%;
   color: black;
+  cursor: url('./assets/cursor.png'), auto;
+}
+
+* {
+  cursor: url('./assets/cursor.png'), auto;
+}
+
+
+a, button, input, textarea, select, [role="button"], [onclick] {
+  cursor: url('./assets/cursor.png'), pointer;
 }
 
 #root {
