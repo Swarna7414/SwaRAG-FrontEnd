@@ -6,7 +6,7 @@ import React from 'react';
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename='/AILab'>
+    <BrowserRouter basename='/SwaRAG-FrontEnd'>
       <App/>
     </BrowserRouter>
   </React.StrictMode>
