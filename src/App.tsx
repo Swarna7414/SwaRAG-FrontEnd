@@ -18,6 +18,15 @@ const App: React.FC = () => {
       * {
         cursor: url(${cursorImage}), auto !important;
       }
+      /* Navigation links - Home, About, DataBase */
+      a[href="/"], a[href="/about"], a[href*="db-console"],
+      a[href="/"] *, a[href="/about"] *, a[href*="db-console"] * {
+        cursor: pointer !important;
+      }
+      /* Input fields - show default text cursor (I-beam) */
+      input, textarea, [contenteditable="true"], [contenteditable=""] {
+        cursor: text !important;
+      }
     `;
     document.head.appendChild(style);
 
@@ -27,11 +36,11 @@ const App: React.FC = () => {
       const navLinks = document.querySelectorAll('a[href="/"], a[href="/about"], a[href*="db-console"]');
       navLinks.forEach(link => {
         if (link instanceof HTMLElement) {
-          link.style.cursor = 'pointer';
+          link.style.setProperty('cursor', 'pointer', 'important');
           
           link.querySelectorAll('*').forEach(child => {
             if (child instanceof HTMLElement) {
-              child.style.cursor = 'pointer';
+              child.style.setProperty('cursor', 'pointer', 'important');
             }
           });
         }
@@ -42,14 +51,14 @@ const App: React.FC = () => {
       allButtons.forEach(btn => {
         const text = btn.textContent?.trim();
         
-        // Search and RAG buttons - find by text content
+        
         if (text === 'Search' || text === 'RAG') {
-          btn.style.cursor = 'pointer';
+          btn.style.setProperty('cursor', 'pointer', 'important');
         }
         
-
+        
         if (btn.querySelector('svg')) {
-          btn.style.cursor = 'pointer';
+          btn.style.setProperty('cursor', 'pointer', 'important');
         }
       });
     };
