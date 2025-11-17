@@ -18,6 +18,10 @@ const App: React.FC = () => {
       * {
         cursor: url(${cursorImage}), auto !important;
       }
+      /* All anchor tags should use pointer cursor */
+      a, a * {
+        cursor: pointer !important;
+      }
       /* Navigation links - Home, About, DataBase */
       a[href="/"], a[href="/about"], a[href*="db-console"],
       a[href="/"] *, a[href="/about"] *, a[href*="db-console"] * {
@@ -32,6 +36,19 @@ const App: React.FC = () => {
 
     
     const applyPointerCursor = () => {
+      
+      const allLinks = document.querySelectorAll('a');
+      allLinks.forEach(link => {
+        if (link instanceof HTMLElement) {
+          link.style.setProperty('cursor', 'pointer', 'important');
+          
+          link.querySelectorAll('*').forEach(child => {
+            if (child instanceof HTMLElement) {
+              child.style.setProperty('cursor', 'pointer', 'important');
+            }
+          });
+        }
+      });
       
       const navLinks = document.querySelectorAll('a[href="/"], a[href="/about"], a[href*="db-console"]');
       navLinks.forEach(link => {
