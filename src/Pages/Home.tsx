@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CiSearch } from "react-icons/ci";
+import { IoChevronDown } from "react-icons/io5";
 import HomeLogo from "../assets/Navbarlogo.png"
 
 const Home: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string>('');
+  const [isTagDropdownOpen, setIsTagDropdownOpen] = useState<boolean>(false);
+  const tagDropdownRef = useRef<HTMLDivElement>(null);
+  
+  const tags = ['spring-boot', 'react', 'django', 'node.js', 'flask'];
+
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tagDropdownRef.current && !tagDropdownRef.current.contains(event.target as Node)) {
+        setIsTagDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleTagSelect = (tag: string) => {
+    setSelectedTag(tag);
+    setIsTagDropdownOpen(false);
+  };
 
   const validateQuery = (): boolean => {
     if (!searchQuery.trim()) {
@@ -23,13 +48,6 @@ const Home: React.FC = () => {
     
   };
 
-  const handleRAG = () => {
-    if (!validateQuery()) {
-      return;
-    }
-    console.log('RAG:', searchQuery);
-    
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -48,7 +66,7 @@ const Home: React.FC = () => {
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] px-4 -mt-8">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-3xl">
           
           <div className="flex justify-center mb-8">
             <img
@@ -72,6 +90,8 @@ const Home: React.FC = () => {
                   : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'
               }`}
             />
+            
+            
             <button
               onClick={handleSearch}
               className="absolute inset-y-0 right-0 flex items-center pr-4 hover:opacity-80 transition-opacity duration-200"
@@ -87,17 +107,38 @@ const Home: React.FC = () => {
 
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4">
+            <div className="relative" ref={tagDropdownRef}>
+              <button
+                onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
+                className=" flex items-center w-full sm:w-[280px] px-20 py-6 border-2 hover:border-blue-500 text-black text-lg font-medium rounded-2xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-md transform cursor-pointer relative"
+              >
+                <span className="absolute left-5">{selectedTag || 'Tag'}</span>
+                <IoChevronDown className={`absolute right-5 w-4 h-4 transition-transform duration-200 ${isTagDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isTagDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-full sm:w-auto min-w-[200px] bg-gray-100 rounded-md shadow-lg z-50 overflow-hidden">
+                  <div className="py-1">
+                    {tags.map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => handleTagSelect(tag)}
+                        className={`w-full text-left px-4 py-2 text-xl text-black hover:bg-blue-100 transition-colors duration-200 ${
+                          selectedTag === tag ? 'bg-blue-400 font-medium rounded-xl' : ''
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <button
               onClick={handleSearch}
-              className="w-full sm:w-auto px-20 py-3 border-2 hover:border-blue-500 text-black text-lg font-medium rounded-2xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-md transform cursor-pointer"
-            >
-              Search
-            </button>
-            <button
-              onClick={handleRAG}
               className="w-full sm:w-auto px-20 py-3 border-2 border-black bg-gray-100 text-black text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg transform cursor-pointer"
             >
-              RAG
+              Search
             </button>
           </div>
         </div>
