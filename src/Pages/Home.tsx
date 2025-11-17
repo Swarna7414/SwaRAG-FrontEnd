@@ -89,13 +89,13 @@ const Home: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4">
             <button
               onClick={handleSearch}
-              className="w-full sm:w-auto px-20 py-3 border-2 hover:border-blue-500 hover:text-white text-black text-lg font-medium rounded-2xl hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-md transform cursor-pointer"
+              className="w-full sm:w-auto px-20 py-3 border-2 hover:border-blue-500 text-black text-lg font-medium rounded-2xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-md transform cursor-pointer"
             >
               Search
             </button>
             <button
               onClick={handleRAG}
-              className="w-full sm:w-auto px-20 py-3 border-2 border-transparent bg-blue-400 text-white text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg transform cursor-pointer"
+              className="w-full sm:w-auto px-20 py-3 border-2 border-black bg-gray-100 text-black text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg transform cursor-pointer"
             >
               RAG
             </button>
