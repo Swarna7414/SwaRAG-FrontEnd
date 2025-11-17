@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CiSearch } from "react-icons/ci";
-import { TiArrowSortedDown } from "react-icons/ti";
+import { BiSolidDownArrow } from "react-icons/bi";
 import HomeLogo from "../assets/Navbarlogo.png"
 
 const Home: React.FC = () => {
@@ -110,10 +110,10 @@ const Home: React.FC = () => {
             <div className="relative" ref={tagDropdownRef}>
               <button
                 onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
-                className=" flex items-center w-full sm:w-[280px] px-20 py-6 border-2 hover:border-blue-500 text-black text-lg font-medium rounded-2xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-md transform cursor-pointer relative"
+                className=" flex items-center w-full sm:w-[280px] px-20 py-6 border-2 hover:border-blue-500 text-black text-lg font-medium rounded-2xl hover:bg-blue-50 focus:outline-none transition-all duration-200 hover:shadow-md transform cursor-pointer relative"
               >
                 <span className="absolute left-5">{selectedTag || 'Tag'}</span>
-                <TiArrowSortedDown className={`absolute right-5 w-4 h-4 transition-transform duration-200 ${isTagDropdownOpen ? 'rotate-180' : ''}`} />
+                <BiSolidDownArrow className={`absolute right-5 w-4 h-4 transition-transform duration-200 ${isTagDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {isTagDropdownOpen && (
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
             </div>
             <button
               onClick={handleSearch}
-              className="w-full sm:w-auto px-20 py-3 border-2 border-black bg-gray-100 text-black text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg transform cursor-pointer"
+              className="w-full sm:w-auto px-20 py-3 border-2 border-black bg-gray-100 text-black text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none transition-all duration-200 hover:shadow-lg transform cursor-pointer"
             >
               Search
             </button>
