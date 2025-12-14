@@ -222,6 +222,29 @@ const Home: React.FC = () => {
             color: rgb(34, 197, 94);
           }
         }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+        .react-spinner {
+          animation: spin 3s linear infinite;
+        }
+        .react-spinner-inner {
+          animation: spinReverse 2s linear infinite;
+        }
+        .loading-dot {
+          animation: pulse 1.4s ease-in-out infinite;
+        }
+        .loading-dot:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+        .loading-dot:nth-child(3) {
+          animation-delay: 0.4s;
+        }
       `}</style>
       <div className="pt-20 min-h-screen bg-gray-50">
       <div className={`flex flex-col items-center ${hasSearched ? 'justify-start' : 'justify-center'} min-h-[calc(100vh-8rem)] px-4 ${hasSearched ? 'pt-4' : '-mt-8'}`}>
@@ -289,7 +312,7 @@ const Home: React.FC = () => {
                 </button>
               </div>
               
-              {/* TAG and Search Buttons - Bottom on mobile, right on desktop */}
+             
               <div className="flex flex-row gap-3 w-full sm:w-auto items-center justify-center">
                 <div className="relative flex-1 sm:flex-none" ref={tagDropdownRef}>
                   <button
@@ -324,7 +347,7 @@ const Home: React.FC = () => {
                   disabled={isSearching}
                   className="flex-1 sm:flex-none px-4 sm:px-16 py-3 border-2 border-black bg-gray-100 text-black text-base sm:text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none transition-all duration-200 hover:shadow-lg transform cursor-pointer disabled:opacity-50"
                 >
-                  {isSearching ? 'Searching...' : 'Search'}
+                  {isSearching ? 'Retrieving...' : 'Search'}
                 </button>
               </div>
             </div>
@@ -387,7 +410,7 @@ const Home: React.FC = () => {
                   disabled={isSearching}
                   className="w-full sm:w-auto px-20 py-3 border-2 border-black bg-gray-100 text-black text-lg font-medium rounded-2xl hover:bg-transparent hover:text-black hover:border-blue-500 focus:outline-none transition-all duration-200 hover:shadow-lg transform cursor-pointer h-[48px] sm:h-auto disabled:opacity-50"
                 >
-                  {isSearching ? 'Searching...' : 'Search'}
+                  {isSearching ? 'Retiring...' : 'Search'}
                 </button>
               </div>
             </>
@@ -434,8 +457,14 @@ const Home: React.FC = () => {
               <div className="mt-4 min-h-[400px]">
                 {isSearching && (
                   <div className="text-center py-20">
-                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    <p className="mt-2 text-gray-600">Searching...</p>
+                    <div className="flex items-center justify-center gap-2">
+                      <p className="text-gray-600 text-lg font-medium">Searching</p>
+                      <div className="flex gap-1.5">
+                        <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                        <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                        <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                      </div>
+                    </div>
                   </div>
                 )}
                 
