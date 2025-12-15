@@ -5,7 +5,7 @@ import { displaylinks } from '../util/types';
 const About: React.FC = () => {
 
   return (
-    <div className="pt-20 min-h-screen bg-gray-50">
+    <div className="pt-20 min-h-screen bg-white">
       <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16 py-8">
         <div className="flex flex-col md:flex-row gap-6">
           
