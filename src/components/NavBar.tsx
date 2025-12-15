@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md border-b border-gray-200/50 h-20 flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-50">
+    <div className="fixed top-0 left-0 right-0 bg-gray-50 backdrop-blur-md border-b border-gray-200/50 h-20 flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-50">
       <div className="flex items-center space-x-2">
         <img
           src={NavBarLogo}
@@ -64,7 +64,7 @@ const NavBar: React.FC = () => {
         </a>
       </ul>
 
-      <div className={`fixed top-20 right-0 w-64 min-h-screen bg-white/90 backdrop-blur-2xl flex flex-col items-start justify-start gap-6 pt-8 px-6 pb-8 md:hidden transition-all duration-500 ease-in-out shadow-2xl overflow-y-auto z-40 ${
+      <div className={`fixed top-20 right-0 w-64 min-h-screen bg-gray-100 backdrop-blur-2xl flex flex-col items-start justify-start gap-6 pt-8 px-6 pb-8 md:hidden transition-all duration-500 ease-in-out shadow-2xl overflow-y-auto z-40 ${
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       }`}>
           <Link to="/" onClick={toggleMenu}><div className="hover:text-blue-600 text-lg font-medium">Home</div></Link>
