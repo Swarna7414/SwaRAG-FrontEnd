@@ -3,7 +3,6 @@ import { BiSolidDownArrow } from "react-icons/bi";
 import { TbSearch } from "react-icons/tb";
 import HomeLogo from "../assets/Navbarlogo.png"
 
-// API Configuration
 const API_BASE_URL = 'https://SaiSankarSwarna-SwaRAG.hf.space';
 
 interface SearchAnswer {
@@ -51,6 +50,7 @@ const Home: React.FC = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'results' | 'rag'>('results');
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [isRAGSearching, setIsRAGSearching] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [ragResults, setRagResults] = useState<RAGResult | null>(null);
   const tagDropdownRef = useRef<HTMLDivElement>(null);
@@ -93,8 +93,6 @@ const Home: React.FC = () => {
     setIsSearching(true);
     setError('');
     setHasSearched(true);
-    setActiveTab('results');
-    setRagResults(null);
     
     try {
       const response = await fetch(`${API_BASE_URL}/search`, {
@@ -164,11 +162,10 @@ const Home: React.FC = () => {
       return;
     }
     
-    setIsSearching(true);
+    setIsRAGSearching(true);
     setError('');
     setHasSearched(true);
     setActiveTab('rag');
-    setSearchResults(null);
     
     try {
       const response = await fetch(`${API_BASE_URL}/ragsearch`, {
@@ -192,10 +189,9 @@ const Home: React.FC = () => {
       setError('Failed to perform RAG search. Please try again.');
       console.error('RAG search error:', err);
     } finally {
-      setIsSearching(false);
+      setIsRAGSearching(false);
     }
   };
-
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -246,11 +242,11 @@ const Home: React.FC = () => {
           animation-delay: 0.4s;
         }
       `}</style>
-      <div className="pt-20 min-h-screen bg-gray-50">
+      <div className="pt-20 min-h-screen bg-white">
       <div className={`flex flex-col items-center ${hasSearched ? 'justify-start' : 'justify-center'} min-h-[calc(100vh-8rem)] px-4 ${hasSearched ? 'pt-4' : '-mt-8'}`}>
         <div className={`w-full ${hasSearched ? 'max-w-full' : 'max-w-3xl'}`}>
           
-          {/* Logo - Hidden when searched */}
+          
           {!hasSearched && (
             <div className="flex justify-center mb-8">
               <img
@@ -261,10 +257,10 @@ const Home: React.FC = () => {
             </div>
           )}
           
-          {/* Search Bar with TAG and Search Button - Horizontal when searched */}
+          
           {hasSearched ? (
             <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-2 w-full">
-              {/* Search Box - Top on mobile, left on desktop */}
+            
               <div className="sm:hidden relative w-full mb-2">
                 <input
                   type="text"
@@ -422,7 +418,7 @@ const Home: React.FC = () => {
             </div>
           )}
 
-          {/* Tab Section - Only show after search */}
+          
           {hasSearched && (
             <div className="w-full mt-6">
               <div className="flex items-center justify-center pb-2 gap-96">
@@ -439,7 +435,7 @@ const Home: React.FC = () => {
                 <button
                   onClick={() => {
                     setActiveTab('rag');
-                    if (!ragResults) {
+                    if (!ragResults && !isRAGSearching) {
                       handleRAGSearch();
                     }
                   }}
@@ -453,29 +449,35 @@ const Home: React.FC = () => {
                 </button>
               </div>
               
-              {/* Tab Content Area */}
+              
               <div className="mt-4 min-h-[400px]">
-                {isSearching && (
-                  <div className="text-center py-20">
-                    <div className="flex items-center justify-center gap-2">
-                      <p className="text-gray-600 text-lg font-medium">Searching</p>
-                      <div className="flex gap-1.5">
-                        <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
-                        <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
-                        <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
-                      </div>
-                    </div>
-                  </div>
-                )}
                 
-                {!isSearching && activeTab === 'results' && (
-                  <div>
-                    {searchResults ? (
-                      <div>
-                        <div className="space-y-4">
-                          {searchResults.answers.length > 0 ? (
-                            searchResults.answers.map((answer, index) => (
-                              <div key={answer.answer_id || index} className="rounded-lg p-6">
+                {activeTab === 'results' && (
+                  <>
+                    {isSearching && (
+                      <div className="text-center py-20">
+                        <div className="flex items-center justify-center gap-2">
+                          <p className="text-gray-600 text-lg font-medium">Searching</p>
+                          <div className="flex gap-1.5">
+                            <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!isSearching && (
+                <div>
+                  {searchResults ? (
+                    <div>
+                      <div className="space-y-4">
+                        {searchResults.answers.length > 0 ? (
+                          searchResults.answers.map((answer, index) => {
+                            const docId = answer.answer_id || index;
+                            
+                            return (
+                              <div key={docId} className="rounded-lg p-6 bg-white">
                                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
                                   <a 
                                     href={answer.question_link} 
@@ -489,7 +491,7 @@ const Home: React.FC = () => {
                                 <div className="prose max-w-none mt-3">
                                   <p className="text-gray-700 whitespace-pre-wrap">{answer.answer_body}</p>
                                 </div>
-                                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
+                                <div className="mt-4 flex items-center gap-4 text-sm text-gray-500 flex-wrap">
                                   <span className="text-black">Score: {answer.answer_score}</span>
                                   {answer.is_accepted && answer.answer_score !== 0 && (
                                     <span 
@@ -506,36 +508,53 @@ const Home: React.FC = () => {
                                   )}
                                 </div>
                               </div>
-                            ))
-                          ) : (
-                            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                              <p className="text-gray-600">No results found. Try a different query.</p>
-                            </div>
-                          )}
-                        </div>
+                            );
+                          })
+                        ) : (
+                          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                            <p className="text-gray-600">No results found. Try a different query.</p>
+                          </div>
+                        )}
                       </div>
+                    </div>
                     ) : (
                       <div className="text-center text-gray-500 py-20">
                         <p>Click Search or use the lens icon to search</p>
                       </div>
                     )}
-                  </div>
+                </div>
+              )}
+                </>
                 )}
                 
-                {!isSearching && activeTab === 'rag' && (
+                
+                {activeTab === 'rag' && (
                   <div>
-                    {ragResults ? (
-                      <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-4">{ragResults.question}</h3>
-                        <div className="prose max-w-none">
+                    {isRAGSearching && (
+                      <div className="text-center py-20">
+                        <div className="flex items-center justify-center gap-2">
+                          <p className="text-gray-600 text-lg font-medium">Searching with RAG</p>
+                          <div className="flex gap-1.5">
+                            <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span className="loading-dot w-2 h-2 bg-blue-500 rounded-full"></span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!isRAGSearching && ragResults ? (
+                      <div className="rounded-lg p-6 bg-white">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2">{ragResults.question}</h3>
+                        <div className="prose max-w-none mt-3">
                           <div 
                             className="text-gray-700 whitespace-pre-wrap"
                             dangerouslySetInnerHTML={{ __html: ragResults.rag_response.replace(/\n/g, '<br />') }}
                           />
                         </div>
                         {ragResults.primary_source && (
-                          <div className="mt-6 pt-4 border-t border-gray-200">
-                            <p className="text-sm font-semibold text-gray-600 mb-2">Primary Source:</p>
+                          <div className="mt-4 flex items-center gap-4 text-sm text-gray-500 flex-wrap">
+                            <span className="text-sm font-semibold text-gray-600">Primary Source:</span>
                             <a 
                               href={ragResults.primary_source.link} 
                               target="_blank" 
@@ -544,36 +563,36 @@ const Home: React.FC = () => {
                             >
                               {ragResults.primary_source.title}
                             </a>
-                            <span className="ml-2 text-sm text-gray-500">
+                            <span className="text-sm text-gray-500">
                               (Score: {ragResults.primary_source.score}, Relevance: {ragResults.primary_source.relevance.toFixed(2)})
                             </span>
                           </div>
                         )}
                         {ragResults.alternative_sources && ragResults.alternative_sources.length > 0 && (
-                          <div className="mt-4 pt-4 border-t border-gray-200">
-                            <p className="text-sm font-semibold text-gray-600 mb-2">Alternative Sources:</p>
-                            <ul className="list-disc list-inside space-y-1">
+                          <div className="mt-4 flex items-center gap-4 text-sm text-gray-500 flex-wrap">
+                            <span className="text-sm font-semibold text-gray-600">Alternative Sources:</span>
+                            <div className="flex flex-wrap gap-2">
                               {ragResults.alternative_sources.map((source, index) => (
-                                <li key={index}>
-                                  <a 
-                                    href={source.link} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 hover:text-blue-800 hover:underline"
-                                  >
-                                    {source.title}
-                                  </a>
-                                </li>
+                                <a 
+                                  key={index}
+                                  href={source.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:text-blue-800 hover:underline"
+                                >
+                                  {source.title}
+                                  {ragResults.alternative_sources && index < ragResults.alternative_sources.length - 1 && ','}
+                                </a>
                               ))}
-                            </ul>
+                            </div>
                           </div>
                         )}
                       </div>
-                    ) : (
+                    ) : !isRAGSearching ? (
                       <div className="text-center text-gray-500 py-20">
-                        <p>Click on RAG tab to generate AI-powered answer</p>
+                        <p>Click on RAG tab to generate AI-powered answer from internet search</p>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 )}
               </div>
